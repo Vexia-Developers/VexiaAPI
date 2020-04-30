@@ -1,0 +1,4 @@
+name: Core
+version: 1.0
+authors: [KiwiTerra,Spileur]
+main: fr.vexia.core.VexiaCore

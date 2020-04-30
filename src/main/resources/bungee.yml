@@ -1,0 +1,4 @@
+name: VexiaProxy
+author: [KiwiTerra, Spileur]
+version: 1.0
+main: fr.vexia.proxy.VexiaProxy
