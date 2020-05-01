@@ -11,15 +11,22 @@ import java.util.UUID;
 
 public class FriendManager {
 
+    /*
+CREATE TABLE friends (
+    player uuid,
+    "anotherPlayer" uuid
+);
+     */
+
     private static final String TABLE_NAME = "friends";
 
-    private static final String ADD_FRIENDSHIP = "INSERT INTO " + TABLE_NAME + "(player, anotherPlayer) VALUES(?::uuid, ?::uuid)";
+    private static final String ADD_FRIENDSHIP = "INSERT INTO " + TABLE_NAME + "(player, anotherplayer) VALUES(?::uuid, ?::uuid)";
     private static final String DELETE_FRIENDSHIP = "DELETE FROM " + TABLE_NAME + " WHERE " +
-            "(player = ?::uuid AND anotherPlayer = ?::uuid)" +
+            "(player = ?::uuid AND anotherplayer = ?::uuid)" +
             " OR " +
-            "(player = ?:: AND anotherPlayer = ?::uuid)";
-    private static final String IS_FRIEND = "SELECT * FROM " + TABLE_NAME + " WHERE (uuid = ?::uuid AND anotherPlayer = ?::uuid) OR (uuid = ?::uuid AND uuidfriend = ?::uuid)";
-    private static final String GET_FRIENDS = "SELECT * FROM " + TABLE_NAME + " WHERE player = ?::uuid OR anotherPlayer = ?::uuid";
+            "(player = ?:: AND anotherplayer = ?::uuid)";
+    private static final String IS_FRIEND = "SELECT * FROM " + TABLE_NAME + " WHERE (player = ?::uuid AND anotherplayer = ?::uuid) OR (player = ?::uuid AND anotherplayer = ?::uuid)";
+    private static final String GET_FRIENDS = "SELECT * FROM " + TABLE_NAME + " WHERE player = ?::uuid OR anotherplayer = ?::uuid";
 
     public static void create(UUID player, UUID anotherPlayer) {
         DatabaseExecutor.executeVoidQuery(data -> {
@@ -45,8 +52,8 @@ public class FriendManager {
             statement.setObject(1, player);
             statement.setObject(2, anotherPlayer);
 
-            statement.setObject(2, player);
-            statement.setObject(1, anotherPlayer);
+            statement.setObject(4, player);
+            statement.setObject(3, anotherPlayer);
             return statement.executeQuery().next();
         });
     }

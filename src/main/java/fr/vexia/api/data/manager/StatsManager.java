@@ -44,9 +44,17 @@ public class StatsManager {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             HashMap<StatsType, Integer> stats = new HashMap<>();
-            for (StatsType statsType : gameType.getStatsTypes()) {
-                stats.put(statsType, resultSet.getInt(statsType.name().toLowerCase()));
+
+            if(!resultSet.next()) {
+                for (StatsType statsType : gameType.getStatsTypes()) {
+                    stats.put(statsType, 0);
+                }
+            } else {
+                for (StatsType statsType : gameType.getStatsTypes()) {
+                    stats.put(statsType, resultSet.getInt(statsType.name().toLowerCase()));
+                }
             }
+
             return new Statistic(gameType, stats);
         });
     }
@@ -71,8 +79,8 @@ public class StatsManager {
         }
 
         sql.append(values.toString());
-        sql.append(")");
+        sql.append(") ");
+        sql.append(conflict);
         return sql.toString();
     }
-
 }

@@ -1,0 +1,5 @@
+maintenance: true
+max: 10
+motd:
+  ligne1: '&5&lVEXIA'
+  ligne2: '&1DESC'

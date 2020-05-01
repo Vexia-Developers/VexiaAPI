@@ -104,7 +104,7 @@ public class VexiaProxy extends Plugin {
             File file = new File(getDataFolder(), "config.yml");
 
             if (!file.exists()) {
-                try (InputStream in = getResourceAsStream("config.yml")) {
+                try (InputStream in = getResourceAsStream("configProxy.yml")) {
                     Files.copy(in, file.toPath());
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -25,6 +25,7 @@ public class ProxyQuitListener implements Listener {
         if (vexiaPlayer == null) return;
 
         vexiaPlayer.setLastJoin(new Date());
+        vexiaPlayer.setServer(null);
 
         List<VexiaPlayer> friends = FriendManager.getFriends(player.getUniqueId());
         for (VexiaPlayer friend : friends) {

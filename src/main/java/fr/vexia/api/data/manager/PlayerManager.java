@@ -15,6 +15,23 @@ import java.util.*;
 
 public class PlayerManager {
 
+    /*
+CREATE TABLE accounts (
+  uuid uuid NOT NULL,
+  name varchar(50) DEFAULT NULL,
+  ip char(15) DEFAULT NULL,
+  rank varchar(50) NOT NULL DEFAULT 'JOUEUR',
+  rankexpires timestamp with time zone DEFAULT NULL,
+  coins int NOT NULL DEFAULT 0,
+  credits int NOT NULL DEFAULT 0,
+  firstjoin timestamp with time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+  lastjoin timestamp with time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+  server varchar(50) DEFAULT NULL,
+  options jsonb NOT NULL DEFAULT '{}',
+  PRIMARY KEY (uuid)
+);
+     */
+
     private static final String TABLE_NAME = "accounts";
 
     private static final String GET_BY_UUID = "SELECT * FROM " + TABLE_NAME + " WHERE uuid = ?::uuid";
@@ -26,7 +43,7 @@ public class PlayerManager {
 
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(\"uuid\", name, ip, rank, rankexpires, coins, credits,"
             + "firstjoin, lastjoin, server, options) "
-            + "VALUES (?::uuid, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (\"uuid\") DO UPDATE SET "
+            + "VALUES (?::uuid, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?::jsonb) ON CONFLICT (\"uuid\") DO UPDATE SET "
             + "name = EXCLUDED.name, ip = EXCLUDED.ip, rank = EXCLUDED.rank,"
             + "rankexpires = EXCLUDED.rankexpires, coins = EXCLUDED.coins,"
             + "credits = EXCLUDED.credits, lastjoin = EXCLUDED.lastjoin,"
@@ -35,7 +52,7 @@ public class PlayerManager {
     public static VexiaPlayer get(UUID uuid) {
         return DatabaseExecutor.executeQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(GET_BY_UUID);
-            statement.setObject(1, uuid);
+            statement.setString(1, uuid.toString());
 
             ResultSet rs = statement.executeQuery();
             return rs.next() ? getVexiaPlayer(rs) : null;

@@ -15,6 +15,7 @@ import fr.vexia.proxy.utils.TimeFormat;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.*;
@@ -66,8 +67,8 @@ public class SanctionCommand extends VexiaCommand {
         VexiaSanction vexiaSanction = new VexiaSanction(vexiaPlayer.getUUID(), account.getUUID(), sanctionType, reason, start, end);
         SanctionManager.save(vexiaSanction);
 
-        ProxyServer.getInstance().broadcast(String.format("§5§l[§fVexiaSanction§5§l] §d%s s'est fais %s par %s.",
-                vexiaPlayer.getName(), sanctionType.getName().toLowerCase(), sender.getName()));
+        ProxyServer.getInstance().broadcast(new TextComponent(String.format("§5§l[§fVexiaSanction§5§l] §d%s s'est fais %s par %s.",
+                vexiaPlayer.getName(), sanctionType.getName().toLowerCase(), sender.getName())));
 
         if (proxiedPlayer != null && sanctionType != SanctionType.MUTE) {
             proxiedPlayer.disconnect(sanctionComponent.build());

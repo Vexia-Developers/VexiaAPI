@@ -4,15 +4,15 @@ import net.md_5.bungee.api.ChatColor;
 
 public enum Rank {
 
-    ADMINISTRATEUR( "Admin", ChatColor.DARK_RED),
-    MODERATEUR("Modérateur", ChatColor.GOLD),
-    STAFF("Staff", ChatColor.DARK_GREEN),
-    AMI("Ami", ChatColor.WHITE),
-    PARTENAIRE("Partenaire", ChatColor.BLUE),
-    VX_PLUS( "VX+", ChatColor.GREEN, 75),
-    VX( "VX", ChatColor.YELLOW, 60),
+    JOUEUR( "Joueur", ChatColor.GRAY, 10),
     MINIVX( "Mini-VX", ChatColor.AQUA, 35),
-    JOUEUR( "Joueur", ChatColor.GRAY, 10);
+    VX( "VX", ChatColor.YELLOW, 60),
+    VX_PLUS( "VX+", ChatColor.GREEN, 75),
+    PARTENAIRE("Partenaire", ChatColor.BLUE),
+    AMI("Ami", ChatColor.WHITE),
+    STAFF("Staff", ChatColor.DARK_GREEN),
+    MODERATEUR("Modérateur", ChatColor.GOLD),
+    ADMINISTRATEUR( "Admin", ChatColor.DARK_RED);
 
     private int id;
     private String name;
@@ -30,7 +30,7 @@ public enum Rank {
     }
 
     private Rank(String name, String prefix, ChatColor color, int friendsMax) {
-        this.id = ordinal() - values().length;
+        this.id = ordinal();
         this.name = name;
         this.prefix = prefix;
         this.color = color;

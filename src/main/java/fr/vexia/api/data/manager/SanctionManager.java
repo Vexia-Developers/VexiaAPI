@@ -15,26 +15,38 @@ import java.util.UUID;
 
 public class SanctionManager {
 
+    /*
+CREATE TABLE infractions (
+  uuid uuid DEFAULT NULL,
+  player uuid DEFAULT NULL,
+  moderator uuid DEFAULT NULL,
+  type VARCHAR(255) NOT NULL, CHECK (type IN ('BAN','MUTE','KICK')),
+  reason varchar(255) DEFAULT 'Aucune raison',
+  start timestamp with time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+  finish timestamp with time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+  finished SMALLINT DEFAULT 0,
+  PRIMARY KEY (uuid)
+);
+     */
+    private static final String TABLE_NAME = "infractions";
 
-    private static final String TABLE_NAME = "sanctions";
-
-    private static final String SAVE = "INSERT INTO infractions(uuid, player, moderator, type, reason, start, finish, finished)" +
-            "VALUES (?::uuid, ?::uuid, ?::uuid, ?, ?, ?, ?, ?::smallint)" +
+    private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(uuid, player, moderator, type, reason, start, finish, finished)" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)" +
             "ON CONFLICT (uuid) DO UPDATE SET finish = EXCLUDED.finish, finished = EXCLUDED.finished";
-    private static final String GET_ACTIVE = "SELECT * FROM " + TABLE_NAME + " WHERE uuid = ?::uuid AND (\"end\" IS NULL OR \"end\" < NOW())";
+    private static final String GET_ACTIVE = "SELECT * FROM " + TABLE_NAME + " WHERE uuid = ?::uuid AND (\"finish\" IS NULL OR \"finish\" < NOW())";
 
 
     public static void save(VexiaSanction sanction) {
         DatabaseExecutor.executeVoidQuery(c -> {
             PreparedStatement statement = c.prepareStatement(SAVE);
             statement.setObject(1, sanction.getID());
-            statement.setObject(1, sanction.getPlayer());
-            statement.setObject(2, sanction.getModerator());
-            statement.setString(3, sanction.getSanctionType().name());
-            statement.setString(4, sanction.getReason());
-            statement.setTimestamp(5, new Timestamp(sanction.getStart().getTime()));
-            statement.setTimestamp(6, sanction.getEnd() != null ? new Timestamp(sanction.getEnd().getTime()) : null);
-            statement.setBoolean(7, sanction.isFinished());
+            statement.setObject(2, sanction.getPlayer());
+            statement.setObject(3, sanction.getModerator());
+            statement.setString(4, sanction.getSanctionType().name());
+            statement.setString(5, sanction.getReason());
+            statement.setTimestamp(6, new Timestamp(sanction.getStart().getTime()));
+            statement.setTimestamp(7, sanction.getEnd() != null ? new Timestamp(sanction.getEnd().getTime()) : null);
+            statement.setBoolean(8, sanction.isFinished());
             statement.executeUpdate();
         });
     }

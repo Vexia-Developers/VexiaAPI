@@ -7,11 +7,11 @@ import fr.vexia.api.data.redis.RedisConnection;
 public class VexiaAPI {
 
     public void init() {
-        DatabaseConnectionBuilder.aDatabaseConnection().withHost("play.vexia.fr")
-                .withUser("postgres").withPassword("8YmADe9e7kBXqhw6").withPort(5432).withDatabase("minecraft")
+        DatabaseConnectionBuilder.aDatabaseConnection().withHost("127.0.0.1")
+                .withUser("postgres").withPassword("root").withPort(5432).withDatabase("vexia")
                 .build();
 
-        new RedisConnection("play.vexia.fr", "s7CgJXDbf33LCnGM", 6300);
+        new RedisConnection("127.0.0.1", null, 6379);
     }
 
     public void stop() {

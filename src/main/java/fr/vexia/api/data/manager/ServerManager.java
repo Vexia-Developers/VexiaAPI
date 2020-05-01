@@ -4,15 +4,30 @@ import fr.vexia.api.data.executors.DatabaseExecutor;
 import fr.vexia.api.data.redis.pubsub.PubSubAPI;
 import fr.vexia.api.servers.GameState;
 import fr.vexia.api.servers.GameType;
-import fr.vexia.api.servers.VexiaServer;
 import fr.vexia.api.servers.ServerType;
+import fr.vexia.api.servers.VexiaServer;
 
+import javax.xml.bind.Marshaller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ServerManager {
+    /*
+CREATE TABLE servers (
+  name VARCHAR(255) DEFAULT NULL,
+  servertype VARCHAR(255) NOT NULL,
+  gametype VARCHAR(255) DEFAULT NULL,
+  state VARCHAR(255) NOT NULL,
+  online int NOT NULL DEFAULT 0,
+  max int NOT NULL DEFAULT 0,
+  port int NOT NULL DEFAULT 0,
+  PRIMARY KEY (name)
+);
+     */
 
     private static final String SAVE = "INSERT INTO servers(name, servertype, gametype, state, online, max, port) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (name) DO UPDATE SET "
@@ -20,6 +35,8 @@ public class ServerManager {
             + "state = EXCLUDED.state, online = EXCLUDED.online, max = EXCLUDED.max, "
             + "port = EXCLUDED.port";
     private static final String GET_BY_NAME = "SELECT * FROM servers WHERE name = ?";
+    private static final String GET_BY_GAMETYPE = "SELECT * FROM servers WHERE gametype ?";
+    private static final String ONLINES_BY_GAMETYPE = "SELECT SUM(online) AS onlines FROM servers WHERE gametype = ?";
     private static final String DELETE_BY_NAME = "DELETE FROM servers WHERE name = ?";
 
     public static void save(VexiaServer server) {
@@ -64,6 +81,33 @@ public class ServerManager {
             statement.setString(1, server.getName());
 
             statement.executeUpdate();
+        });
+    }
+
+    public static int getOnlines(GameType gameType) {
+        return DatabaseExecutor.executeQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(ONLINES_BY_GAMETYPE);
+            statement.setString(1, gameType.name());
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(0);
+            }
+            return -1;
+        });
+    }
+
+    public static List<VexiaServer> getServers(GameType gameType) {
+        return DatabaseExecutor.executeQuery(connection -> {
+            List<VexiaServer> servers = new ArrayList<>();
+            PreparedStatement statement = connection.prepareStatement(GET_BY_GAMETYPE);
+            statement.setString(1, gameType.name());
+
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                servers.add(getVexiaServer(resultSet));
+            }
+            return servers;
         });
     }
 

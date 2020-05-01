@@ -14,10 +14,13 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import org.bukkit.entity.Player;
 
 import java.util.Date;
 import java.util.List;
@@ -117,6 +120,15 @@ public class ProxyJoinListener implements Listener {
 
             playerFriend.sendMessage(new TextBuilder("§e" + player.getName() + " §6vient de se connecter").build());
         }
-
     }
+
+    @EventHandler
+    public void onServerConnect(ServerConnectedEvent event) {
+        ProxiedPlayer proxiedPlayer = event.getPlayer();
+        Server server = event.getServer();
+        VexiaPlayer vexiaPlayer = PlayerManager.get(proxiedPlayer.getUniqueId());
+        vexiaPlayer.setServer(server.getInfo().getName());
+        PlayerManager.save(vexiaPlayer);
+    }
+
 }
