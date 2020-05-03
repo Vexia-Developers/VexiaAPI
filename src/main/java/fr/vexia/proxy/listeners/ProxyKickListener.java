@@ -1,6 +1,7 @@
 package fr.vexia.proxy.listeners;
 
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -11,7 +12,11 @@ public class ProxyKickListener implements Listener {
     @EventHandler
     public void onKick(ServerKickEvent event) {
         ProxiedPlayer player = event.getPlayer();
-        player.connect(ProxyServer.getInstance().getServerInfo("hub01"));
-        player.sendMessage(event.getKickReasonComponent());
+        ServerInfo hub01 = ProxyServer.getInstance().getServerInfo("hub01");
+        if(hub01 != null) {
+            player.connect(hub01);
+        } else {
+            player.disconnect(event.getKickReasonComponent());
+        }
     }
 }

@@ -7,7 +7,6 @@ import fr.vexia.api.servers.GameType;
 import fr.vexia.api.servers.ServerType;
 import fr.vexia.api.servers.VexiaServer;
 
-import javax.xml.bind.Marshaller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +34,7 @@ CREATE TABLE servers (
             + "state = EXCLUDED.state, online = EXCLUDED.online, max = EXCLUDED.max, "
             + "port = EXCLUDED.port";
     private static final String GET_BY_NAME = "SELECT * FROM servers WHERE name = ?";
-    private static final String GET_BY_GAMETYPE = "SELECT * FROM servers WHERE gametype ?";
+    private static final String GET_BY_GAMETYPE = "SELECT * FROM servers WHERE gametype = ?";
     private static final String ONLINES_BY_GAMETYPE = "SELECT SUM(online) AS onlines FROM servers WHERE gametype = ?";
     private static final String DELETE_BY_NAME = "DELETE FROM servers WHERE name = ?";
 
@@ -91,7 +90,7 @@ CREATE TABLE servers (
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt(0);
+                return resultSet.getInt(1);
             }
             return -1;
         });
@@ -104,7 +103,7 @@ CREATE TABLE servers (
             statement.setString(1, gameType.name());
 
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 servers.add(getVexiaServer(resultSet));
             }
             return servers;

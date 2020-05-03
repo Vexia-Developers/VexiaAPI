@@ -78,7 +78,7 @@ public class UnSanctionCommand extends VexiaCommand {
     }
 
     private VexiaSanction checkMute(VexiaPlayer vexiaPlayer, CommandSender sender) {
-        VexiaSanction mute = SanctionManager.getActiveSanction(vexiaPlayer.getUUID(), SanctionType.BAN);
+        VexiaSanction mute = SanctionManager.getActiveSanction(vexiaPlayer.getUUID(), SanctionType.MUTE);
         if (mute == null) {
             sender.sendMessage(new TextBuilder("Ce joueur n'est pas muet !", ChatColor.RED).build());
             return null;

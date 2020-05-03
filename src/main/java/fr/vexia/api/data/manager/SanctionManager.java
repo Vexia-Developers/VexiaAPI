@@ -31,9 +31,9 @@ CREATE TABLE infractions (
     private static final String TABLE_NAME = "infractions";
 
     private static final String SAVE = "INSERT INTO " + TABLE_NAME + "(uuid, player, moderator, type, reason, start, finish, finished)" +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?::smallint)" +
             "ON CONFLICT (uuid) DO UPDATE SET finish = EXCLUDED.finish, finished = EXCLUDED.finished";
-    private static final String GET_ACTIVE = "SELECT * FROM " + TABLE_NAME + " WHERE uuid = ?::uuid AND (\"finish\" IS NULL OR \"finish\" < NOW())";
+    private static final String GET_ACTIVE = "SELECT * FROM " + TABLE_NAME + " WHERE player = ?::uuid AND (\"finish\" IS NULL OR \"finish\" > NOW())";
 
 
     public static void save(VexiaSanction sanction) {
@@ -46,7 +46,7 @@ CREATE TABLE infractions (
             statement.setString(5, sanction.getReason());
             statement.setTimestamp(6, new Timestamp(sanction.getStart().getTime()));
             statement.setTimestamp(7, sanction.getEnd() != null ? new Timestamp(sanction.getEnd().getTime()) : null);
-            statement.setBoolean(8, sanction.isFinished());
+            statement.setInt(8, sanction.isFinished() ? 1 : 0);
             statement.executeUpdate();
         });
     }

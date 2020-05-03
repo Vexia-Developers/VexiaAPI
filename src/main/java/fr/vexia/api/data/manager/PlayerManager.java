@@ -103,7 +103,6 @@ CREATE TABLE accounts (
             PreparedStatement statement = connection.prepareStatement(GETS_ONLINE);
 
             ResultSet rs = statement.executeQuery();
-
             while (rs.next()) {
                 players.add(getVexiaPlayer(rs));
             }

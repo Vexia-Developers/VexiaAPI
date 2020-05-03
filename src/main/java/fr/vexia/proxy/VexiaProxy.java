@@ -44,8 +44,8 @@ public class VexiaProxy extends Plugin {
 
         // Register Listeners
         PluginManager pluginManager = getProxy().getPluginManager();
-        pluginManager.registerListener(this, new ProxyJoinListener());
-        pluginManager.registerListener(this, new ProxyQuitListener());
+        pluginManager.registerListener(this, new ProxyJoinListener(this));
+        pluginManager.registerListener(this, new ProxyQuitListener(this));
         pluginManager.registerListener(this, new ProxyChatListener());
         pluginManager.registerListener(this, new ProxyPingListener(configuration));
         pluginManager.registerListener(this, new ProxyKickListener());

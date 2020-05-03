@@ -4,6 +4,7 @@ import fr.vexia.api.data.manager.PlayerManager;
 import fr.vexia.api.data.manager.FriendManager;
 import fr.vexia.api.players.VexiaPlayer;
 import fr.vexia.api.players.options.Option;
+import fr.vexia.proxy.VexiaProxy;
 import fr.vexia.proxy.utils.TextBuilder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -17,9 +18,16 @@ import java.util.UUID;
 
 public class ProxyQuitListener implements Listener {
 
+    private VexiaProxy proxy;
+
+    public ProxyQuitListener(VexiaProxy proxy) {
+        this.proxy = proxy;
+    }
+
     @EventHandler
     public void onQuit(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
+        proxy.getStaffManager().removeStaff(player.getUniqueId());
         UUID uuid = player.getUniqueId();
         VexiaPlayer vexiaPlayer = PlayerManager.get(uuid);
         if (vexiaPlayer == null) return;

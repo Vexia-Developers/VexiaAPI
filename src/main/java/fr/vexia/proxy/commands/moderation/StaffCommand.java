@@ -7,14 +7,14 @@ import fr.vexia.proxy.VexiaProxy;
 import fr.vexia.proxy.commands.VexiaCommand;
 import fr.vexia.proxy.utils.TextBuilder;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class StaffCommand extends VexiaCommand {
+
+    private VexiaProxy proxy;
 
     public StaffCommand(VexiaProxy proxy) {
         super(proxy, "staff");
@@ -32,16 +32,12 @@ public class StaffCommand extends VexiaCommand {
 
     @Override
     public void onCommand(CommandSender sender, VexiaPlayer account, String[] args) {
-
-        List<VexiaPlayer> staff = new ArrayList<>();
-        for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-            VexiaPlayer vexiaPlayer = PlayerManager.get(player.getUniqueId());
-            if (vexiaPlayer == null || vexiaPlayer.getRank().getId() < Rank.STAFF.getId()) continue;
-            staff.add(vexiaPlayer);
-        }
-
         if (args.length == 0) {
-            String staffList = staff.stream().map(player -> player.getRank().getColor() + player.getName()).collect(Collectors.joining(", "));
+            ArrayList<UUID> staff = proxy.getStaffManager().getStaff();
+            String staffList = staff.stream().map(uuid -> {
+                VexiaPlayer player = PlayerManager.get(uuid);
+                return player.getRank().getColor() + player.getName();
+            }).collect(Collectors.joining(", "));
             sender.sendMessage(new TextBuilder("§9Staff (" + staff.size() + ") : " + staffList).build());
             return;
         }

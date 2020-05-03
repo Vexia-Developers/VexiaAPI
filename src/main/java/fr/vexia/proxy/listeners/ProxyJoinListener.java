@@ -8,6 +8,7 @@ import fr.vexia.api.players.options.Option;
 import fr.vexia.api.players.rank.Rank;
 import fr.vexia.api.sanctions.VexiaSanction;
 import fr.vexia.api.sanctions.SanctionType;
+import fr.vexia.proxy.VexiaProxy;
 import fr.vexia.proxy.utils.TextBuilder;
 import fr.vexia.proxy.utils.TimeFormat;
 import net.md_5.bungee.api.ProxyServer;
@@ -27,6 +28,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProxyJoinListener implements Listener {
+
+    private VexiaProxy proxy;
+
+    public ProxyJoinListener(VexiaProxy proxy) {
+        this.proxy = proxy;
+    }
 
     @EventHandler
     public void onPreJoin(PreLoginEvent event) {
@@ -80,24 +87,12 @@ public class ProxyJoinListener implements Listener {
                 vexiaPlayer.setRankExpires(null);
             }
 
-            player.setPermission("bungeecord.command.server", vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId());
-
-            for (VexiaPlayer playerIP : PlayerManager.getWithIP(vexiaPlayer.getIP())) {
-                if (playerIP.getUUID().equals(vexiaPlayer.getUUID())) continue;
-                boolean ban = SanctionManager.getActiveSanction(playerIP.getUUID(), SanctionType.BAN) != null;
-                if (!ban) continue;
-
-                for (ProxiedPlayer players : ProxyServer.getInstance().getPlayers()) {
-                    VexiaPlayer vexiaPlayerStaff = PlayerManager.get(players.getUniqueId());
-                    if (vexiaPlayerStaff == null || vexiaPlayerStaff.getRank().getId() < Rank.STAFF.getId()) continue;
-                    players.sendMessage(new TextBuilder("§5§l[§fVexiaSanction§5§l] §d" + player.getName() +
-                            " §cviens de se connecter avec un compte bannis sur son IP").build());
-                }
-                break;
+            if(vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId()) {
+                player.setPermission("bungeecord.command.server", vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId());
+                proxy.getStaffManager().addStaff(vexiaPlayer.getUUID());
             }
 
         }
-        PlayerManager.save(vexiaPlayer);
 
         player.setTabHeader(new TextComponent("§r\n§6§lVEXIA§f§l NETWORK §7\n"),
                 new TextComponent("§r\n  §6Forum et Boutique sur §bhttps://vexia.fr  §r\n"));
@@ -106,6 +101,20 @@ public class ProxyJoinListener implements Listener {
         title.title(new TextComponent("§6§lVEXIA"));
         title.subTitle(new TextComponent("§eBienvenue " + player.getName()));
         title.send(player);
+
+        for (VexiaPlayer playerIP : PlayerManager.getWithIP(vexiaPlayer.getIP())) {
+            if (playerIP.getUUID().equals(vexiaPlayer.getUUID())) continue;
+            boolean ban = SanctionManager.getActiveSanction(playerIP.getUUID(), SanctionType.BAN) != null;
+            if (!ban) continue;
+
+
+            proxy.getStaffManager().broadcast(new TextBuilder("§5§l[§fVexiaSanction§5§l] §d" + player.getName() +
+                    " §cviens de se connecter avec un compte bannis sur son IP"));
+            break;
+        }
+
+        PlayerManager.save(vexiaPlayer);
+
 
         List<VexiaPlayer> friends = FriendManager.getFriends(player.getUniqueId());
         for (VexiaPlayer friend : friends) {
