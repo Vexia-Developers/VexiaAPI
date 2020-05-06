@@ -6,7 +6,8 @@ import static fr.vexia.api.stats.StatsType.*;
 
 public enum GameType {
 
-    RTF("RushTheFlag", new StatsType[]{WINS, LOOSES, KILLS, DEATHS});
+    ISLANDFLAG("IslandFlag", new StatsType[]{WINS, LOOSES, KILLS, DEATHS}),
+    RUSHBOX("RushBox", new StatsType[]{KILLS, DEATHS});
 
     private final String name;
     private final StatsType[] statsTypes;
