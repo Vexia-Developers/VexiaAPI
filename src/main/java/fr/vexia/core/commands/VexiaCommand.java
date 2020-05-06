@@ -62,10 +62,14 @@ public abstract class VexiaCommand extends Command {
         return onTabComplete(sender, vexiaPlayer, args);
     }
 
-    public void register() throws NoSuchFieldException, IllegalAccessException {
-        final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-        bukkitCommandMap.setAccessible(true);
-        CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-        commandMap.register("vexia", this);
+    public void register() {
+        try {
+            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register("vexia", this);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
