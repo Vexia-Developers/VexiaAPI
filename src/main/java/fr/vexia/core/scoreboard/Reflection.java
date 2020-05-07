@@ -28,7 +28,6 @@ public class Reflection {
         try {
             return PackageType.MINECRAFT_SERVER.getClass(className);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }
