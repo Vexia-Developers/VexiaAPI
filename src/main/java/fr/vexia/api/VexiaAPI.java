@@ -8,7 +8,7 @@ public class VexiaAPI {
 
     public void init() {
         DatabaseConnectionBuilder.aDatabaseConnection().withHost("127.0.0.1")
-                .withUser("postgres").withPassword("root").withPort(5432).withDatabase("vexia")
+                .withUser("minecraft").withPassword("FcrXeZPZtksLeu3S2Y3GcJU5wSFTSw8K").withPort(5432).withDatabase("minecraft")
                 .build();
 
         new RedisConnection("127.0.0.1", null, 6379);

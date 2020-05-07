@@ -12,10 +12,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class VexiaCore extends JavaPlugin {
 
+    private VexiaAPI api;
+
     @Override
     public void onEnable() {
-        VexiaAPI api = new VexiaAPI();
+        api = new VexiaAPI();
         api.init();
+
 
         TeleportManager teleportManager = new TeleportManager();
 
@@ -26,4 +29,8 @@ public class VexiaCore extends JavaPlugin {
         PubSubAPI.psubscribe("teleport", new TeleportPubSub(teleportManager));
     }
 
+    @Override
+    public void onDisable() {
+        api.stop();
+    }
 }
