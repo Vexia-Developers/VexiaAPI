@@ -9,10 +9,16 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
 
 public class ProxyPingListener implements Listener {
-    private Configuration configuration;
+
+    private boolean maintenance;
+    private int max;
+    private String line1, line2;
 
     public ProxyPingListener(Configuration configuration) {
-        this.configuration = configuration;
+        this.maintenance = configuration.getBoolean("maintenance", true);
+        this.max = configuration.getInt("max", ProxyServer.getInstance().getConfig().getPlayerLimit());
+        this.line1 = ChatColor.translateAlternateColorCodes('&', configuration.getString("motd.ligne1"));
+        this.line2 = ChatColor.translateAlternateColorCodes('&', configuration.getString("motd.ligne1"));
     }
 
     @EventHandler
@@ -21,17 +27,17 @@ public class ProxyPingListener implements Listener {
 
         ServerPing.Protocol protocol = ping.getVersion();
 
-        if (configuration.getBoolean("maintenance")) {
+        if (maintenance) {
             protocol = new ServerPing.Protocol(ChatColor.RED + "En Maintenance...", 0);
-        } else if (configuration.getInt("max") <= ProxyServer.getInstance().getOnlineCount()) {
-            protocol = new ServerPing.Protocol("§4Plein §8- §7" + ping.getPlayers().getOnline() + "§8/§7" + configuration.getInt("max"), 0);
+        } else if (max <= ProxyServer.getInstance().getOnlineCount()) {
+            protocol = new ServerPing.Protocol("§4Plein §8- §7" + ping.getPlayers().getOnline() + "§8/§7" + max, 0);
         }
 
         ping.setVersion(protocol);
-        ping.setPlayers(new ServerPing.Players(configuration.getInt("max"), ping.getPlayers().getOnline(), ping.getPlayers().getSample()));
+        ping.setPlayers(new ServerPing.Players(max, ping.getPlayers().getOnline(), ping.getPlayers().getSample()));
 
-        String ligne1 = ChatColor.translateAlternateColorCodes('&', configuration.getString("motd.ligne1"));
-        String ligne2 = ChatColor.translateAlternateColorCodes('&', configuration.getString("motd.ligne2"));
+        String ligne1 = ChatColor.translateAlternateColorCodes('&', line1);
+        String ligne2 = ChatColor.translateAlternateColorCodes('&', line2);
         ping.setDescription(ligne1 + "\n" + ChatColor.RESET + ligne2);
         event.setResponse(ping);
     }

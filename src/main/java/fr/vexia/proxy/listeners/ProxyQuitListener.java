@@ -1,7 +1,7 @@
 package fr.vexia.proxy.listeners;
 
-import fr.vexia.api.data.manager.PlayerManager;
 import fr.vexia.api.data.manager.FriendManager;
+import fr.vexia.api.data.manager.PlayerManager;
 import fr.vexia.api.players.VexiaPlayer;
 import fr.vexia.api.players.options.Option;
 import fr.vexia.proxy.VexiaProxy;
