@@ -86,7 +86,7 @@ CREATE TABLE servers (
     public static int getOnlines(GameType gameType) {
         return DatabaseExecutor.executeQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(ONLINES_BY_GAMETYPE);
-            statement.setString(1, gameType.name());
+            statement.setString(1, gameType == null ? null : gameType.name());
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {

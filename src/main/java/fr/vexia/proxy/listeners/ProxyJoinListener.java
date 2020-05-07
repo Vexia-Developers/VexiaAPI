@@ -6,8 +6,8 @@ import fr.vexia.api.data.manager.SanctionManager;
 import fr.vexia.api.players.VexiaPlayer;
 import fr.vexia.api.players.options.Option;
 import fr.vexia.api.players.rank.Rank;
-import fr.vexia.api.sanctions.VexiaSanction;
 import fr.vexia.api.sanctions.SanctionType;
+import fr.vexia.api.sanctions.VexiaSanction;
 import fr.vexia.proxy.VexiaProxy;
 import fr.vexia.proxy.utils.TextBuilder;
 import fr.vexia.proxy.utils.TimeFormat;
@@ -21,7 +21,6 @@ import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import org.bukkit.entity.Player;
 
 import java.util.Date;
 import java.util.List;
@@ -72,6 +71,9 @@ public class ProxyJoinListener implements Listener {
         UUID uuid = player.getUniqueId();
         String ip = player.getAddress().getAddress().getHostAddress();
         String pseudo = player.getName();
+
+        long start = System.currentTimeMillis();
+
         VexiaPlayer vexiaPlayer = PlayerManager.get(uuid);
 
         if (vexiaPlayer == null) {
@@ -87,12 +89,16 @@ public class ProxyJoinListener implements Listener {
                 vexiaPlayer.setRankExpires(null);
             }
 
-            if(vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId()) {
+            if (vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId()) {
                 player.setPermission("bungeecord.command.server", vexiaPlayer.getRank().getId() >= Rank.MODERATEUR.getId());
                 proxy.getStaffManager().addStaff(vexiaPlayer.getUUID());
             }
 
         }
+
+        PlayerManager.save(vexiaPlayer);
+
+        System.out.println("debug: " + (System.currentTimeMillis() - start));
 
         player.setTabHeader(new TextComponent("§r\n§6§lVEXIA§f§l NETWORK §7\n"),
                 new TextComponent("§r\n  §6Forum et Boutique sur §bhttps://vexia.fr  §r\n"));
@@ -112,8 +118,6 @@ public class ProxyJoinListener implements Listener {
                     " §cviens de se connecter avec un compte bannis sur son IP"));
             break;
         }
-
-        PlayerManager.save(vexiaPlayer);
 
 
         List<VexiaPlayer> friends = FriendManager.getFriends(player.getUniqueId());
