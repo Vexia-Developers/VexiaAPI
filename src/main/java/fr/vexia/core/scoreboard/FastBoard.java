@@ -50,43 +50,43 @@ public class FastBoard {
 
     static {
         try {
-            if (Reflection.getNMSClass("ScoreboardServer$Action") != null) {
+            if (FastReflection.nmsOptionalClass("ScoreboardServer$Action").isPresent()) {
                 VERSION_TYPE = VersionType.V1_13;
-            } else if (Reflection.getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay") != null) {
+            } else if (FastReflection.nmsOptionalClass("IScoreboardCriteria$EnumScoreboardHealthDisplay").isPresent()) {
                 VERSION_TYPE = VersionType.V1_8;
             } else {
                 VERSION_TYPE = VersionType.V1_7;
             }
 
-            Class<?> craftChatMessageClass = Reflection.getNMSClass("util.CraftChatMessage");
-            Class<?> entityPlayerClass = Reflection.getNMSClass("EntityPlayer");
-            Class<?> playerConnectionClass = Reflection.getNMSClass("PlayerConnection");
-            Class<?> craftPlayerClass = Reflection.getNMSClass("entity.CraftPlayer");
+            Class<?> craftChatMessageClass = FastReflection.obcClass("util.CraftChatMessage");
+            Class<?> entityPlayerClass = FastReflection.nmsClass("EntityPlayer");
+            Class<?> playerConnectionClass = FastReflection.nmsClass("PlayerConnection");
+            Class<?> craftPlayerClass = FastReflection.obcClass("entity.CraftPlayer");
 
             MESSAGE_FROM_STRING = craftChatMessageClass.getDeclaredMethod("fromString", String.class);
-            CHAT_COMPONENT_CLASS = Reflection.getNMSClass("IChatBaseComponent");
+            CHAT_COMPONENT_CLASS = FastReflection.nmsClass("IChatBaseComponent");
 
             PLAYER_GET_HANDLE = craftPlayerClass.getDeclaredMethod("getHandle");
             PLAYER_CONNECTION = entityPlayerClass.getDeclaredField("playerConnection");
-            SEND_PACKET = playerConnectionClass.getDeclaredMethod("sendPacket", Reflection.getNMSClass("Packet"));
+            SEND_PACKET = playerConnectionClass.getDeclaredMethod("sendPacket", FastReflection.nmsClass("Packet"));
 
-            PACKET_SB_OBJ = Reflection.getNMSClass("PacketPlayOutScoreboardObjective").getConstructor();
-            PACKET_SB_DISPLAY_OBJ = Reflection.getNMSClass("PacketPlayOutScoreboardDisplayObjective").getConstructor();
-            PACKET_SB_SCORE = Reflection.getNMSClass("PacketPlayOutScoreboardScore").getConstructor();
-            PACKET_SB_TEAM = Reflection.getNMSClass("PacketPlayOutScoreboardTeam").getConstructor();
+            PACKET_SB_OBJ = FastReflection.nmsClass("PacketPlayOutScoreboardObjective").getConstructor();
+            PACKET_SB_DISPLAY_OBJ = FastReflection.nmsClass("PacketPlayOutScoreboardDisplayObjective").getConstructor();
+            PACKET_SB_SCORE = FastReflection.nmsClass("PacketPlayOutScoreboardScore").getConstructor();
+            PACKET_SB_TEAM = FastReflection.nmsClass("PacketPlayOutScoreboardTeam").getConstructor();
 
             if (VersionType.V1_8.isHigherOrEqual()) {
-                ENUM_SB_HEALTH_DISPLAY = Reflection.getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
+                ENUM_SB_HEALTH_DISPLAY = FastReflection.nmsClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
 
                 if (VersionType.V1_13.isHigherOrEqual()) {
-                    ENUM_SB_ACTION = Reflection.getNMSClass("ScoreboardServer$Action");
+                    ENUM_SB_ACTION = FastReflection.nmsClass("ScoreboardServer$Action");
                 } else {
-                    ENUM_SB_ACTION = Reflection.getNMSClass("PacketPlayOutScoreboardScore$EnumScoreboardAction");
+                    ENUM_SB_ACTION = FastReflection.nmsClass("PacketPlayOutScoreboardScore$EnumScoreboardAction");
                 }
 
-                ENUM_SB_HEALTH_DISPLAY_INTEGER = Reflection.getValue(ENUM_SB_HEALTH_DISPLAY, "INTEGER");
-                ENUM_SB_ACTION_CHANGE = Reflection.getValue(ENUM_SB_ACTION, "CHANGE");
-                ENUM_SB_ACTION_REMOVE = Reflection.getValue(ENUM_SB_ACTION, "REMOVE");
+                ENUM_SB_HEALTH_DISPLAY_INTEGER = FastReflection.enumValueOf(ENUM_SB_HEALTH_DISPLAY, "INTEGER");
+                ENUM_SB_ACTION_CHANGE = FastReflection.enumValueOf(ENUM_SB_ACTION, "CHANGE");
+                ENUM_SB_ACTION_REMOVE = FastReflection.enumValueOf(ENUM_SB_ACTION, "REMOVE");
             } else {
                 ENUM_SB_HEALTH_DISPLAY = null;
                 ENUM_SB_ACTION = null;
