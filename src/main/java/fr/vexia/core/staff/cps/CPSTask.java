@@ -33,7 +33,7 @@ public class CPSTask implements Runnable {
         }
 
         if(cpsPlayer.getMaxRight() < cpsPlayer.getRightClicks()) {
-            cpsPlayer.setMaxRight(cpsPlayer.getRightClicks()<);
+            cpsPlayer.setMaxRight(cpsPlayer.getRightClicks());
         }
 
         cpsPlayer.resetLeftClicks();
