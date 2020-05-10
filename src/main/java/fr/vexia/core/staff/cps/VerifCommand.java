@@ -46,7 +46,7 @@ public class VerifCommand extends VexiaCommand {
                 .id("cps_" + player.getName() + "_" + target.getName())
                 .provider(new CPSGUI(target))
                 .manager(VexiaCore.get().getInventoryManager())
-                .size(6, 9)
+                .size(1, 9)
                 .title(ChatColor.GOLD + "Verif » " + target.getName())
                 .build()
                 .open(player);
