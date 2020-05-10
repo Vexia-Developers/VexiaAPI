@@ -183,4 +183,16 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setGlow(boolean glow) {
+        ItemMeta meta = item.getItemMeta();
+        if(glow) {
+            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            meta.removeEnchant(Enchantment.DURABILITY);
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        item.setItemMeta(meta);
+        return this;
+    }
 }
