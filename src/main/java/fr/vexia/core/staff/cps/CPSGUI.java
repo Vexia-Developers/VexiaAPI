@@ -48,7 +48,7 @@ public class CPSGUI implements InventoryProvider {
                 .toItemStack()));
 
         CPSPlayer cpsPlayer = StaffManager.get().getCPSPlayer(target);
-        contents.set(0, 3, cancelItem(new ItemBuilder(Material.GOLD_BLOCK, convertToGui(cpsPlayer.getLeftClicks()))
+        contents.set(0, 2, cancelItem(new ItemBuilder(Material.GOLD_BLOCK, convertToGui(cpsPlayer.getLeftClicks()))
                 .setName("§6CPS Gauche: §e" + cpsPlayer.getLeftClicks())
                 .addLoreLine("§6Max CPS G.: §e" + cpsPlayer.getMaxLeft())
                 .addLoreLine("§6Alerte CPS G.: §e" + cpsPlayer.getAlertLeft())
@@ -60,7 +60,7 @@ public class CPSGUI implements InventoryProvider {
                 .toItemStack()));
 
         int ping = ((CraftPlayer) target).getHandle().ping;
-        contents.set(0, 4, cancelItem(new ItemBuilder(Material.EMERALD_BLOCK, convertToGui(ping))
+        contents.set(0, 3, cancelItem(new ItemBuilder(Material.EMERALD_BLOCK, convertToGui(ping))
                 .setName("§6Ping: §e"+ping)
                 .toItemStack()));
     }
