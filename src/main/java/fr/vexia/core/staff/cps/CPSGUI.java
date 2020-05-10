@@ -48,6 +48,8 @@ public class CPSGUI implements InventoryProvider {
                 .toItemStack()));
 
         CPSPlayer cpsPlayer = StaffManager.get().getCPSPlayer(target);
+        System.out.println("CPSPlayer: "+cpsPlayer);
+        System.out.println("LeftClicks: "+cpsPlayer.getLeftClicks());
         contents.set(0, 3, cancelItem(new ItemBuilder(Material.GOLD_BLOCK, convertToGui(cpsPlayer.getLeftClicks()))
                 .setName("§6CPS Gauche: §e" + cpsPlayer.getLeftClicks())
                 .addLoreLine("§6Max CPS G.: §e" + cpsPlayer.getMaxLeft())
