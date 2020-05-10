@@ -134,8 +134,7 @@ public class ModListener implements Listener {
     }
 
     private Player getRandomPlayer() {
-        Player[] players = (Player[]) Bukkit.getOnlinePlayers().toArray();
-        return players[new Random().nextInt(players.length) - 1];
+        return Bukkit.getOnlinePlayers().stream().findAny().get();
     }
 
 }
