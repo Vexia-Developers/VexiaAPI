@@ -20,7 +20,7 @@ public class VerifCommand extends VexiaCommand {
 
     @Override
     public boolean onlyPlayer() {
-        return false;
+        return true;
     }
 
     @Override

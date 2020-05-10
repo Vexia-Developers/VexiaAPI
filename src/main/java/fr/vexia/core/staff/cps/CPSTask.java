@@ -28,6 +28,14 @@ public class CPSTask implements Runnable {
             PubSubAPI.publish("cps-alert", String.format("%s:%s:%s:%s", "Droit" , uuid, cpsPlayer.getRightClicks(), cpsPlayer.getAlertRight()));
         }
 
+        if(cpsPlayer.getMaxLeft() < cpsPlayer.getLeftClicks()) {
+            cpsPlayer.setMaxLeft(cpsPlayer.getLeftClicks());
+        }
+
+        if(cpsPlayer.getMaxRight() < cpsPlayer.getRightClicks()) {
+            cpsPlayer.setMaxRight(cpsPlayer.getRightClicks()<);
+        }
+
         cpsPlayer.resetLeftClicks();
         cpsPlayer.resetRightClicks();
 

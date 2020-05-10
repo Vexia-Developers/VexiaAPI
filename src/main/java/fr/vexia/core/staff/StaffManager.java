@@ -39,7 +39,7 @@ public class StaffManager {
             .setGlow(true)
             .setName("§6Téléportation aléatoire")
             .toItemStack();
-    public static final ItemStack VANISH_ITEM = new ItemBuilder(Material.NETHER_STAR, 1, (byte) 3)
+    public static final ItemStack VANISH_ITEM = new ItemBuilder(Material.NETHER_STAR, 1)
             .setGlow(true)
             .setName("§6Vanish")
             .toItemStack();

@@ -30,6 +30,7 @@ public class FreezeCommand extends VexiaCommand {
     protected void onCommand(CommandSender sender, VexiaPlayer account, String[] args) {
         if (args.length == 0) {
             help(sender, account);
+            return;
         }
 
         Player player = (Player) sender;
@@ -40,9 +41,9 @@ public class FreezeCommand extends VexiaCommand {
         }
 
         if(StaffManager.get().isFreeze(target)) {
-            StaffManager.get().freeze(player, target);
-        } else {
             StaffManager.get().unFreeze(player, target);
+        } else {
+            StaffManager.get().freeze(player, target);
         }
     }
 

@@ -20,12 +20,12 @@ public class VanishCommand extends VexiaCommand {
 
     @Override
     public boolean onlyPlayer() {
-        return false;
+        return true;
     }
 
     @Override
     public Rank minimumRank() {
-        return null;
+        return Rank.MODERATEUR;
     }
 
     @Override

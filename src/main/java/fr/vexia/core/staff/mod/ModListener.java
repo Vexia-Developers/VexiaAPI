@@ -1,6 +1,7 @@
 package fr.vexia.core.staff.mod;
 
 import fr.vexia.core.staff.StaffManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
 
 public class ModListener implements Listener {
 
@@ -86,42 +89,53 @@ public class ModListener implements Listener {
         }
     }
 
-	@EventHandler
-	public void onPlayerInteractAnotherPlayer(PlayerInteractEntityEvent event) {
-		if (!(event.getRightClicked() instanceof Player)) {
-			return;
-		}
+    @EventHandler
+    public void onPlayerInteractAnotherPlayer(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof Player)) {
+            return;
+        }
 
-		Player rightclick = (Player) event.getRightClicked();
-		Player player = event.getPlayer();
-		ItemStack item = player.getInventory().getItemInMainHand();
+        Player rightclick = (Player) event.getRightClicked();
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-		if (!event.getHand().equals(EquipmentSlot.HAND) || !StaffManager.get().isMod(player)) {
-			return;
-		}
+        if (!event.getHand().equals(EquipmentSlot.HAND) || !StaffManager.get().isMod(player)) {
+            return;
+        }
 
-		if (item.equals(StaffManager.VERIF_ITEM)) {
-			player.performCommand("verif " + rightclick.getName());
-		} else if (item.equals(StaffManager.FREEZE_ITEM)) {
-			player.performCommand("freeze " + rightclick.getName());
-		}
-	}
+        if (item.equals(StaffManager.VERIF_ITEM)) {
+            player.performCommand("verif " + rightclick.getName());
+        } else if (item.equals(StaffManager.FREEZE_ITEM)) {
+            player.performCommand("freeze " + rightclick.getName());
+        }
+    }
 
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (!event.hasItem() || event.getItem() == null || !event.getItem().hasItemMeta() || event.getItem().getType() == Material.AIR) {
-			return;
-		}
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!event.hasItem() || event.getItem() == null || !event.getItem().hasItemMeta() || event.getItem().getType() == Material.AIR) {
+            return;
+        }
 
-		Player player = event.getPlayer();
-		if (!StaffManager.get().isMod(player)) {
-			return;
-		}
+        Player player = event.getPlayer();
+        if (!StaffManager.get().isMod(player)) {
+            return;
+        }
 
-		event.setCancelled(true);
-		if (event.getItem().equals(StaffManager.VANISH_ITEM)) {
-			player.performCommand("vanish");
-		}
-	}
+        event.setCancelled(true);
+        if (event.getItem().equals(StaffManager.VANISH_ITEM)) {
+            player.performCommand("vanish");
+        } else if (event.getItem().equals(StaffManager.BOOSTER_ITEM)) {
+            player.setVelocity(player.getLocation().getDirection().multiply(3));
+        } else if (event.getItem().equals(StaffManager.RANDOM_TP_ITEM)) {
+            Player randomPlayer = getRandomPlayer();
+            player.teleport(randomPlayer);
+            player.sendMessage("§6Vous avez été téléporté à §c"+randomPlayer.getName());
+        }
+    }
+
+    private Player getRandomPlayer() {
+        Player[] players = (Player[]) Bukkit.getOnlinePlayers().toArray();
+        return players[new Random().nextInt(players.length) - 1];
+    }
 
 }
