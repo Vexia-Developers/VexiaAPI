@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.awt.event.WindowStateListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -140,7 +139,7 @@ public class StaffManager {
     }
 
     public void unVanish(Player player) {
-        if(!this.vanishs.remove(player.getUniqueId())) {
+        if (!this.vanishs.remove(player.getUniqueId())) {
             return;
         }
 
@@ -156,11 +155,14 @@ public class StaffManager {
 
     /*    CPS METHODS       */
     public CPSPlayer getCPSPlayer(Player player) {
-        return this.cpsPlayers.containsKey(player.getUniqueId()) ?
-                this.cpsPlayers.get(player.getUniqueId())
-                :
-                this.cpsPlayers.put(player.getUniqueId(), new CPSPlayer());
+        CPSPlayer cpsPlayer = this.cpsPlayers.get(player.getUniqueId());
+        if (cpsPlayer == null) {
+            cpsPlayer = new CPSPlayer();
+            this.cpsPlayers.put(player.getUniqueId(), cpsPlayer);
+        }
+        return cpsPlayer;
     }
+
     public HashMap<UUID, CPSPlayer> getCPSPlayers() {
         return this.cpsPlayers;
     }
