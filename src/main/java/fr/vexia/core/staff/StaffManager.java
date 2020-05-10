@@ -140,7 +140,10 @@ public class StaffManager {
     }
 
     public void unVanish(Player player) {
-        this.vanishs.remove(player.getUniqueId());
+        if(!this.vanishs.remove(player.getUniqueId())) {
+            return;
+        }
+
         player.sendMessage("§7[§fModération§7] §6Vanish : §a✘");
         for (Player players : Bukkit.getOnlinePlayers()) {
             if (!isVanish(players)) {

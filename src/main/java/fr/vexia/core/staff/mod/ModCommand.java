@@ -32,7 +32,9 @@ public class ModCommand extends VexiaCommand {
         Player player = (Player)sender;
         if(staffManager.isMod(player)) {
             staffManager.disableMod(player);
+            staffManager.unVanish(player);
         } else {
+            staffManager.activateMod(player);
             staffManager.activateMod(player);
         }
     }
