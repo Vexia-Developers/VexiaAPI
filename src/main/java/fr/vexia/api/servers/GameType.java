@@ -6,6 +6,7 @@ import static fr.vexia.api.stats.StatsType.*;
 
 public enum GameType {
 
+    UHC("Uhc", new StatsType[]{}),
     ISLANDFLAG("IslandFlag", new StatsType[]{WINS, LOOSES, KILLS, DEATHS}),
     RUSHBOX("RushBox", new StatsType[]{KILLS, DEATHS});
 

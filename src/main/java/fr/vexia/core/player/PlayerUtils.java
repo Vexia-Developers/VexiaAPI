@@ -2,6 +2,8 @@ package fr.vexia.core.player;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -25,6 +27,7 @@ public class PlayerUtils {
     }
 
     public static void teleportServer(Plugin plugin, Player player, String server) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§6Téléportation vers §e"+server));
         Messenger messenger = Bukkit.getMessenger();
         if(!messenger.isOutgoingChannelRegistered(plugin, "BungeeCord")) {
             messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
