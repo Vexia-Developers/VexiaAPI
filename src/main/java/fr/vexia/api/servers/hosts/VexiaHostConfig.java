@@ -45,6 +45,10 @@ public class VexiaHostConfig {
         return ownerUUID;
     }
 
+    public void setOwnerUUID(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
+    }
+
     public HostGameType getType() {
         return type;
     }
