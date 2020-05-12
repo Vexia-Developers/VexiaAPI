@@ -13,9 +13,10 @@ public class VexiaHostConfig {
     private int maxPlayer = 20;
     private int teams = 8;
     private int borderSize = 1000;
+    private int borderEndSize = 100;
     private float borderSpeed = 0.5F; // block / s
-    private int borderReduce = 20; // in minutes
-    private int timeBeforePVP = 20; // in minutes
+    private int borderReduce = 60; // in minutes
+    private int timeBeforePVP = 10; // in minutes
     private boolean neather = true;
 
     private String serverName;
@@ -23,7 +24,7 @@ public class VexiaHostConfig {
     public VexiaHostConfig(){}
 
     public VexiaHostConfig(int id, UUID ownerUUID, HostGameType type, String serverName,
-                           int maxPlayer, int teams, int borderSize, float borderSpeed, int borderReduce, int timeBeforePVP, boolean neather) {
+                           int maxPlayer, int teams, int borderSize, int borderEndSize, float borderSpeed, int borderReduce, int timeBeforePVP, boolean neather) {
         this.id = id;
         this.ownerUUID = ownerUUID;
         this.type = type;
@@ -31,6 +32,7 @@ public class VexiaHostConfig {
         this.maxPlayer = maxPlayer;
         this.teams = teams;
         this.borderSize = borderSize;
+        this.borderEndSize = borderEndSize;
         this.borderSpeed = borderSpeed;
         this.borderReduce = borderReduce;
         this.timeBeforePVP = timeBeforePVP;
@@ -87,6 +89,14 @@ public class VexiaHostConfig {
 
     public float getBorderSpeed() {
         return borderSpeed;
+    }
+
+    public void setBorderEndSize(int borderEndSize) {
+        this.borderEndSize = borderEndSize;
+    }
+
+    public int getBorderEndSize() {
+        return borderEndSize;
     }
 
     public void setBorderSpeed(float borderSpeed) {
