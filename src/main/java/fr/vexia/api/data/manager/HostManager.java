@@ -68,10 +68,10 @@ public class HostManager  {
             statement.setObject(5, hostConfig.getTeams());
             statement.setObject(6, hostConfig.getBorderSize());
             statement.setObject(7, hostConfig.getBorderEndSize());
-            statement.setObject(7, hostConfig.getBorderSpeed());
-            statement.setObject(8, hostConfig.getBorderReduce());
-            statement.setObject(9, hostConfig.getTimeBeforePVP());
-            statement.setObject(10, hostConfig.isNether());
+            statement.setObject(8, hostConfig.getBorderSpeed());
+            statement.setObject(9, hostConfig.getBorderReduce());
+            statement.setObject(10, hostConfig.getTimeBeforePVP());
+            statement.setObject(11, hostConfig.isNether());
             statement.executeUpdate();
         });
     }
