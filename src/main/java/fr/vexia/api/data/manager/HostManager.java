@@ -40,6 +40,9 @@ public class HostManager  {
 
     private static final String TABLE_NAME = "hosts";
 
+    private static final String INIT = "INSERT INTO "+TABLE_NAME+"(owner, type, max_player, teams, border_size, border_end_size, border_speed, border_reduce, time_before_pvp, nether) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     private static final String SAVE = "INSERT INTO "+TABLE_NAME+"(id, owner, type, max_player, teams, border_size, border_end_size, border_speed, border_reduce, time_before_pvp, nether) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET "
             + "id = EXCLUDED.id, owner = EXCLUDED.owner, type = EXCLUDED.type, " +
@@ -57,8 +60,25 @@ public class HostManager  {
 
     private static final String DELETE_BY_ID = "DELETE FROM "+TABLE_NAME+" WHERE id = ?";
 
+    private static void init(VexiaHostConfig hostConfig){
+        DatabaseExecutor.executeVoidQuery(data -> {
+            PreparedStatement statement = data.prepareStatement(INIT);
+            statement.setObject(2, hostConfig.getOwnerUUID());
+            statement.setObject(3, hostConfig.getType().toString());
+            statement.setObject(4, hostConfig.getMaxPlayer());
+            statement.setObject(5, hostConfig.getTeams());
+            statement.setObject(6, hostConfig.getBorderSize());
+            statement.setObject(7, hostConfig.getBorderEndSize());
+            statement.setObject(8, hostConfig.getBorderSpeed());
+            statement.setObject(9, hostConfig.getBorderReduce());
+            statement.setObject(10, hostConfig.getTimeBeforePVP());
+            statement.setObject(11, hostConfig.isNether());
+            statement.executeUpdate();
+        });
+    }
 
     public static void create(VexiaHostConfig hostConfig){
+        if(hostConfig.getId() == 0){ init(hostConfig); return; }
         DatabaseExecutor.executeVoidQuery(data -> {
             PreparedStatement statement = data.prepareStatement(SAVE);
             statement.setObject(1, (hostConfig.getId() != 0) ? hostConfig.getId() : null);
