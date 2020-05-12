@@ -135,9 +135,11 @@ public class VexiaHostConfig {
                 "§7- Joueurs max : §d" + getMaxPlayer(),
                 "§7- Joueurs par équipe : §d" + getTeams(),
                 "§7- Taille de la bordure : §d" + getBorderSize() + " blocks",
+                "§7- Taille de la bordure fin : §d" + getBorderEndSize() + " blocks",
                 "§7- Vitesse des bordures : §d" + getBorderSpeed() + " blocks/s",
                 "§7- Réduction de la bordure à §d" + getBorderReduce() + " min",
-                "§7 - Activation du PvP à §d" + getTimeBeforePVP() + " min"
+                "§7- Activation du PvP à §d" + getTimeBeforePVP() + " min",
+                "§7- Nether : " + ((isNether()) ? "§aActivé" : "§cDésactivé")
         };
     }
 }

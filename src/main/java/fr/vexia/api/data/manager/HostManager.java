@@ -61,7 +61,7 @@ public class HostManager  {
     public static void create(VexiaHostConfig hostConfig){
         DatabaseExecutor.executeVoidQuery(data -> {
             PreparedStatement statement = data.prepareStatement(SAVE);
-            statement.setObject(1, hostConfig.getId());
+            statement.setObject(1, (hostConfig.getId() != 0) ? hostConfig.getId() : null);
             statement.setObject(2, hostConfig.getOwnerUUID());
             statement.setObject(3, hostConfig.getType().toString());
             statement.setObject(4, hostConfig.getMaxPlayer());
