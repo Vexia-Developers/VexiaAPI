@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import fr.vexia.api.data.executors.DatabaseExecutor;
 import fr.vexia.api.data.redis.RedisConnection;
 import fr.vexia.api.data.redis.pubsub.PubSubAPI;
-import fr.vexia.api.players.VexiaPlayer;
 import fr.vexia.api.servers.hosts.HostGameType;
 import fr.vexia.api.servers.hosts.VexiaHostConfig;
 import redis.clients.jedis.Jedis;
@@ -25,14 +24,15 @@ public class HostManager  {
     (
         "ownerUUID" uuid NOT NULL,
         id serial NOT NULL,
-        "borderSpeed" real NOT NULL DEFAULT 0.5,
+        "borderSpeed" real NOT NULL DEFAULT 1.0,
         "maxPlayer" integer NOT NULL DEFAULT 20,
         teams integer NOT NULL DEFAULT 8,
         "borderSize" integer NOT NULL DEFAULT 1000,
-        "borderReduce" integer NOT NULL DEFAULT 20,
+        "borderEndSize" integer NOT NULL DEFAULT 100,
+        "borderReduce" integer NOT NULL DEFAULT 60,
         "timeBeforePVP" integer NOT NULL DEFAULT 20,
         type character varying(255) NOT NULL DEFAULT 'UHC',
-        neather boolean NOT NULL DEFAULT true,
+        nether boolean NOT NULL DEFAULT true,
         PRIMARY KEY (id)
     );
      */
@@ -40,17 +40,18 @@ public class HostManager  {
 
     private static final String TABLE_NAME = "hosts";
 
-    private static final String SAVE = "INSERT INTO "+TABLE_NAME+"(id, ownerUUID, type, maxPlayer, teams, borderSize, borderSpeed, borderReduce, timeBeforePVP, neather) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET "
+    private static final String SAVE = "INSERT INTO "+TABLE_NAME+"(id, ownerUUID, type, maxPlayer, teams, borderSize, borderEndSize, borderSpeed, borderReduce, timeBeforePVP, nether) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET "
             + "id = EXCLUDED.id, ownerUUID = EXCLUDED.ownerUUID, type = EXCLUDED.type, "
 
             + "maxPlayer = EXCLUDED.maxPlayer, " +
               "teams = EXCLUDED.teams, " +
               "borderSize = EXCLUDED.borderSize, " +
+              "borderEndSize = EXCLUDED.borderEndSize" +
               "borderSpeed = EXCLUDED.borderSpeed, " +
               "borderReduce = EXCLUDED.borderReduce, " +
               "timeBeforePVP = EXCLUDED.timeBeforePVP, " +
-              "neather = EXCLUDED.neather";
+              "nether = EXCLUDED.nether";
 
     private static final String GET_BY_UUID = "SELECT * FROM "+TABLE_NAME+" WHERE ownerUUID = ?";
     private static final String GET_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE id = ?";
@@ -67,10 +68,11 @@ public class HostManager  {
             statement.setObject(4, hostConfig.getMaxPlayer());
             statement.setObject(5, hostConfig.getTeams());
             statement.setObject(6, hostConfig.getBorderSize());
+            statement.setObject(7, hostConfig.getBorderEndSize());
             statement.setObject(7, hostConfig.getBorderSpeed());
             statement.setObject(8, hostConfig.getBorderReduce());
             statement.setObject(9, hostConfig.getTimeBeforePVP());
-            statement.setObject(10, hostConfig.isNeather());
+            statement.setObject(10, hostConfig.isNether());
             statement.executeUpdate();
         });
     }
@@ -93,13 +95,12 @@ public class HostManager  {
             while (rs.next()) {
                 hostConfigs.add(new VexiaHostConfig(rs.getInt("id"), UUID.fromString(rs.getString("ownerUUID")),
                         HostGameType.valueOf(rs.getString("type")), null, rs.getInt("maxPlayer"), rs.getInt("teams"),
-                        rs.getInt("borderSize"), rs.getFloat("borderSpeed"), rs.getInt("borderReduce"), rs.getInt("timeBeforePvp"),
+                        rs.getInt("borderSize"), rs.getInt("borderEndSize"), rs.getFloat("borderSpeed"), rs.getInt("borderReduce"), rs.getInt("timeBeforePvp"),
                         rs.getBoolean("neather")));
             }
         });
         return hostConfigs;
     }
-
 
     public static List<VexiaHostConfig> getRedisHosts(){
         try (Jedis jedis = RedisConnection.getJedis()) {

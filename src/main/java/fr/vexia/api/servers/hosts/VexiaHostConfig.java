@@ -1,7 +1,5 @@
 package fr.vexia.api.servers.hosts;
 
-import fr.vexia.api.servers.VexiaServer;
-
 import java.util.UUID;
 
 public class VexiaHostConfig {
@@ -14,17 +12,17 @@ public class VexiaHostConfig {
     private int teams = 8;
     private int borderSize = 1000;
     private int borderEndSize = 100;
-    private float borderSpeed = 0.5F; // block / s
+    private float borderSpeed = 1F; // block / s
     private int borderReduce = 60; // in minutes
     private int timeBeforePVP = 10; // in minutes
-    private boolean neather = true;
+    private boolean nether = true;
 
     private String serverName;
 
     public VexiaHostConfig(){}
 
     public VexiaHostConfig(int id, UUID ownerUUID, HostGameType type, String serverName,
-                           int maxPlayer, int teams, int borderSize, int borderEndSize, float borderSpeed, int borderReduce, int timeBeforePVP, boolean neather) {
+                           int maxPlayer, int teams, int borderSize, int borderEndSize, float borderSpeed, int borderReduce, int timeBeforePVP, boolean nether) {
         this.id = id;
         this.ownerUUID = ownerUUID;
         this.type = type;
@@ -36,7 +34,7 @@ public class VexiaHostConfig {
         this.borderSpeed = borderSpeed;
         this.borderReduce = borderReduce;
         this.timeBeforePVP = timeBeforePVP;
-        this.neather = neather;
+        this.nether = nether;
     }
 
     public int getId() {
@@ -119,12 +117,12 @@ public class VexiaHostConfig {
         this.timeBeforePVP = timeBeforePVP;
     }
 
-    public boolean isNeather() {
-        return neather;
+    public boolean isNether() {
+        return nether;
     }
 
-    public void setNeather(boolean neather) {
-        this.neather = neather;
+    public void setNether(boolean nether) {
+        this.nether = nether;
     }
 
     public String[] buildConfig(){
