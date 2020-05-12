@@ -63,16 +63,16 @@ public class HostManager  {
     private static void init(VexiaHostConfig hostConfig){
         DatabaseExecutor.executeVoidQuery(data -> {
             PreparedStatement statement = data.prepareStatement(INIT);
-            statement.setObject(2, hostConfig.getOwnerUUID());
-            statement.setObject(3, hostConfig.getType().toString());
-            statement.setObject(4, hostConfig.getMaxPlayer());
-            statement.setObject(5, hostConfig.getTeams());
-            statement.setObject(6, hostConfig.getBorderSize());
-            statement.setObject(7, hostConfig.getBorderEndSize());
-            statement.setObject(8, hostConfig.getBorderSpeed());
-            statement.setObject(9, hostConfig.getBorderReduce());
-            statement.setObject(10, hostConfig.getTimeBeforePVP());
-            statement.setObject(11, hostConfig.isNether());
+            statement.setObject(1, hostConfig.getOwnerUUID());
+            statement.setObject(2, hostConfig.getType().toString());
+            statement.setObject(3, hostConfig.getMaxPlayer());
+            statement.setObject(4, hostConfig.getTeams());
+            statement.setObject(5, hostConfig.getBorderSize());
+            statement.setObject(6, hostConfig.getBorderEndSize());
+            statement.setObject(7, hostConfig.getBorderSpeed());
+            statement.setObject(8, hostConfig.getBorderReduce());
+            statement.setObject(9, hostConfig.getTimeBeforePVP());
+            statement.setObject(10, hostConfig.isNether());
             statement.executeUpdate();
         });
     }
