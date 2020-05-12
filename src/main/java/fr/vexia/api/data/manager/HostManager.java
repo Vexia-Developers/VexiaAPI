@@ -40,20 +40,19 @@ public class HostManager  {
 
     private static final String TABLE_NAME = "hosts";
 
-    private static final String SAVE = "INSERT INTO "+TABLE_NAME+"(id, ownerUUID, type, maxPlayer, teams, borderSize, borderEndSize, borderSpeed, borderReduce, timeBeforePVP, nether) "
+    private static final String SAVE = "INSERT INTO "+TABLE_NAME+"(id, owner, type, max_player, teams, border_size, border_end_size, border_speed, border_reduce, time_before_pvp, nether) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET "
-            + "id = EXCLUDED.id, ownerUUID = EXCLUDED.ownerUUID, type = EXCLUDED.type, "
-
-            + "maxPlayer = EXCLUDED.maxPlayer, " +
+            + "id = EXCLUDED.id, owner = EXCLUDED.owner, type = EXCLUDED.type, " +
+              "max_player = EXCLUDED.max_player, " +
               "teams = EXCLUDED.teams, " +
-              "borderSize = EXCLUDED.borderSize, " +
-              "borderEndSize = EXCLUDED.borderEndSize" +
-              "borderSpeed = EXCLUDED.borderSpeed, " +
-              "borderReduce = EXCLUDED.borderReduce, " +
-              "timeBeforePVP = EXCLUDED.timeBeforePVP, " +
+              "border_size = EXCLUDED.border_size, " +
+              "border_end_size = EXCLUDED.border_end_size, " +
+              "border_speed = EXCLUDED.border_speed, " +
+              "border_reduce = EXCLUDED.border_reduce, " +
+              "time_before_pvp = EXCLUDED.time_before_pvp, " +
               "nether = EXCLUDED.nether";
 
-    private static final String GET_BY_UUID = "SELECT * FROM "+TABLE_NAME+" WHERE ownerUUID = ?";
+    private static final String GET_BY_UUID = "SELECT * FROM "+TABLE_NAME+" WHERE owner = ?";
     private static final String GET_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE id = ?";
 
     private static final String DELETE_BY_ID = "DELETE FROM "+TABLE_NAME+" WHERE id = ?";
@@ -93,10 +92,10 @@ public class HostManager  {
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                hostConfigs.add(new VexiaHostConfig(rs.getInt("id"), UUID.fromString(rs.getString("ownerUUID")),
-                        HostGameType.valueOf(rs.getString("type")), null, rs.getInt("maxPlayer"), rs.getInt("teams"),
-                        rs.getInt("borderSize"), rs.getInt("borderEndSize"), rs.getFloat("borderSpeed"), rs.getInt("borderReduce"), rs.getInt("timeBeforePvp"),
-                        rs.getBoolean("neather")));
+                hostConfigs.add(new VexiaHostConfig(rs.getInt("id"), UUID.fromString(rs.getString("owner")),
+                        HostGameType.valueOf(rs.getString("type")), null, rs.getInt("max_player"), rs.getInt("teams"),
+                        rs.getInt("border_size"), rs.getInt("border_end_size"), rs.getFloat("border_speed"), rs.getInt("border_reduce"), rs.getInt("time_before_pvp"),
+                        rs.getBoolean("nether")));
             }
         });
         return hostConfigs;

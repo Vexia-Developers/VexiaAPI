@@ -16,8 +16,8 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
     compile group: 'redis.clients', name: 'jedis', version: '3.1.0'
 
-    implementation  group: 'net.md-5', name: 'bungeecord-api', version: '1.8-SNAPSHOT'
-    implementation "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
+    shadow  group: 'net.md-5', name: 'bungeecord-api', version: '1.8-SNAPSHOT'
+    shadow "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
     compile 'fr.minuskube.inv:smart-invs:1.2.7'
 }
 
