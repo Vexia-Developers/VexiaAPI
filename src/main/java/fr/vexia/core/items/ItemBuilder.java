@@ -3,12 +3,12 @@ package fr.vexia.core.items;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.banner.Pattern;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.material.Banner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,6 +86,13 @@ public class ItemBuilder {
 
     public ItemBuilder addEnchantments(Map<Enchantment, Integer> enchantments) {
         item.addEnchantments(enchantments);
+        return this;
+    }
+
+    public ItemBuilder addPatterns(Pattern... patterns){
+        BannerMeta banner = (BannerMeta) item.getItemMeta();
+        banner.setPatterns(Arrays.asList(patterns));
+        item.setItemMeta(banner);
         return this;
     }
 
