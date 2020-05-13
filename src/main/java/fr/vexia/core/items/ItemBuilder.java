@@ -89,8 +89,9 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addPatterns(Pattern... patterns){
+    public ItemBuilder setBanner(DyeColor color, Pattern... patterns){
         BannerMeta banner = (BannerMeta) item.getItemMeta();
+        banner.setBaseColor(color);
         banner.setPatterns(Arrays.asList(patterns));
         item.setItemMeta(banner);
         return this;
